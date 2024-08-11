@@ -18,13 +18,14 @@ license = "MIT"
 openssl = ["hyper-tls"]
 rustls = ["hyper-rustls"]
 default = ["openssl"]
+
 [dependencies]
 bytes = "1.0.1"
 tokio = { version = "1.2", features = ["fs", "rt"]}
 
 tracing = "0.1.23"
 tracing-futures = "0.2"
-multipart = { version = "0.17", default-features = false, features = ["client"] }
+multipart = { version = "0.18.0", default-features = false, features = ["client"] }
 
 telegram-bot-raw = { version = "0.9.0", path = "../raw" }
 
@@ -32,6 +33,7 @@ hyper = { version = "0.14", features = ["client", "http1"] }
 hyper-tls = { version = "0.5", optional = true  }
 futures = "0.3"
 hyper-rustls = { version = "0.22", optional = true }
+
 [dev-dependencies]
-tracing-subscriber = "0.2.15"
+tracing-subscriber = "0.3.18"
 tokio = { version = "1.2", features = ["macros", "time", "fs", "rt-multi-thread"] }
