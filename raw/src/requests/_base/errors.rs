@@ -7,7 +7,7 @@ use crate::types::*;
 pub struct Error(ErrorKind);
 
 #[derive(Debug)]
-pub(crate) enum ErrorKind {
+pub enum ErrorKind {
     EmptyBody,
     TelegramError {
         description: String,

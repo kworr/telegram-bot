@@ -5,7 +5,7 @@ use std::fmt;
 pub struct Error(ErrorKind);
 
 #[derive(Debug)]
-pub(crate) enum ErrorKind {
+pub enum ErrorKind {
     Raw(telegram_bot_raw::Error),
     Hyper(hyper::Error),
     Http(hyper::http::Error),
