@@ -106,9 +106,7 @@ impl MessageGetFiles for MessageKind {
                 }
                 Some(files)
             }
-            MessageKind::Photo { data, .. } => {
-                Some(data.iter().map(|f| f.get_file()).collect())
-            }
+            MessageKind::Photo { data, .. } => Some(data.iter().map(|f| f.get_file()).collect()),
             MessageKind::Sticker { data } => Some(vec![data.get_file()]),
             MessageKind::Video { data, .. } => {
                 let mut files = vec![data.get_file()];
@@ -132,9 +130,7 @@ impl MessageGetFiles for MessageKind {
             MessageKind::NewChatMembers { .. } => None,
             MessageKind::LeftChatMember { .. } => None,
             MessageKind::NewChatTitle { .. } => None,
-            MessageKind::NewChatPhoto { data } => {
-                Some(data.iter().map(|f| f.get_file()).collect())
-            }
+            MessageKind::NewChatPhoto { data } => Some(data.iter().map(|f| f.get_file()).collect()),
             MessageKind::DeleteChatPhoto => None,
             MessageKind::GroupChatCreated => None,
             MessageKind::SupergroupChatCreated => None,
