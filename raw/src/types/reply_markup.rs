@@ -107,6 +107,12 @@ impl ReplyKeyboardMarkup {
     }
 }
 
+impl Default for ReplyKeyboardMarkup {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl From<Vec<Vec<KeyboardButton>>> for ReplyKeyboardMarkup {
     fn from(value: Vec<Vec<KeyboardButton>>) -> Self {
         Self::init(value)
@@ -191,6 +197,12 @@ impl ReplyKeyboardRemove {
     }
 }
 
+impl Default for ReplyKeyboardRemove {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 /// This object represents an inline keyboard that appears right next to the message it belongs to.
 #[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
 pub struct InlineKeyboardMarkup {
@@ -215,6 +227,12 @@ impl InlineKeyboardMarkup {
 
     pub fn add_empty_row(&mut self) -> &mut Vec<InlineKeyboardButton> {
         self.add_row(Default::default())
+    }
+}
+
+impl Default for InlineKeyboardMarkup {
+    fn default() -> Self {
+        Self::new()
     }
 }
 
@@ -320,5 +338,11 @@ impl ForceReply {
     pub fn selective(&mut self) -> &mut Self {
         self.selective = true;
         self
+    }
+}
+
+impl Default for ForceReply {
+    fn default() -> Self {
+        Self::new()
     }
 }

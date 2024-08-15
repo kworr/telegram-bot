@@ -10,8 +10,8 @@ pub struct InlineQuery {
     pub offset: String,
 }
 
-impl Into<InlineQueryId> for InlineQuery {
-    fn into(self) -> InlineQueryId {
-        self.id
+impl From<InlineQuery> for InlineQueryId {
+    fn from(val: InlineQuery) -> Self {
+        val.id
     }
 }

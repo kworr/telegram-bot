@@ -21,7 +21,7 @@ pub struct AnswerCallbackQuery<'t> {
     cache_time: Option<i64>,
 }
 
-impl<'i, 't> Request for AnswerCallbackQuery<'t> {
+impl<'t> Request for AnswerCallbackQuery<'t> {
     type Type = JsonRequestType<Self>;
     type Response = JsonTrueToUnitResponse;
 
@@ -104,9 +104,9 @@ where
     where
         T: Into<Cow<'t, str>>,
     {
-        AnswerCallbackQuery::new(&self, text)
+        AnswerCallbackQuery::new(self, text)
     }
     fn acknowledge<'t>(&self) -> AnswerCallbackQuery<'t> {
-        AnswerCallbackQuery::acknowledge(&self)
+        AnswerCallbackQuery::acknowledge(self)
     }
 }

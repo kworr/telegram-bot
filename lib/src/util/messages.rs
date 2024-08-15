@@ -12,11 +12,11 @@ use crate::types::{
 /// For example, this will return the text from text messages, or the caption of a photo.
 pub trait MessageText {
     /// Obtain text from a message if available.
-    fn text<'a>(&'a self) -> Option<String>;
+    fn text(&self) -> Option<String>;
 }
 
 impl MessageText for MessageOrChannelPost {
-    fn text<'a>(&'a self) -> Option<String> {
+    fn text(&self) -> Option<String> {
         match self {
             MessageOrChannelPost::Message(msg) => msg.text(),
             MessageOrChannelPost::ChannelPost(post) => post.text(),
@@ -25,13 +25,13 @@ impl MessageText for MessageOrChannelPost {
 }
 
 impl MessageText for Message {
-    fn text<'a>(&'a self) -> Option<String> {
+    fn text(&self) -> Option<String> {
         self.kind.text()
     }
 }
 
 impl MessageText for MessageKind {
-    fn text<'a>(&'a self) -> Option<String> {
+    fn text(&self) -> Option<String> {
         match self {
             MessageKind::Text { data, .. } => Some(data.to_owned()),
             MessageKind::Audio { data } => data.title.to_owned(),
@@ -64,7 +64,7 @@ impl MessageText for MessageKind {
 }
 
 impl MessageText for ChannelPost {
-    fn text<'a>(&'a self) -> Option<String> {
+    fn text(&self) -> Option<String> {
         self.kind.text()
     }
 }
@@ -76,11 +76,11 @@ impl MessageText for ChannelPost {
 /// A video, video note or document returns any thumbnail as well.
 pub trait MessageGetFiles {
     /// Obtain files from a message if available.
-    fn get_files<'a>(&'a self) -> Option<Vec<GetFile>>;
+    fn get_files(&self) -> Option<Vec<GetFile>>;
 }
 
 impl MessageGetFiles for MessageOrChannelPost {
-    fn get_files<'a>(&'a self) -> Option<Vec<GetFile>> {
+    fn get_files(&self) -> Option<Vec<GetFile>> {
         match self {
             MessageOrChannelPost::Message(msg) => msg.get_files(),
             MessageOrChannelPost::ChannelPost(post) => post.get_files(),
@@ -89,13 +89,13 @@ impl MessageGetFiles for MessageOrChannelPost {
 }
 
 impl MessageGetFiles for Message {
-    fn get_files<'a>(&'a self) -> Option<Vec<GetFile>> {
+    fn get_files(&self) -> Option<Vec<GetFile>> {
         self.kind.get_files()
     }
 }
 
 impl MessageGetFiles for MessageKind {
-    fn get_files<'a>(&'a self) -> Option<Vec<GetFile>> {
+    fn get_files(&self) -> Option<Vec<GetFile>> {
         match self {
             MessageKind::Text { .. } => None,
             MessageKind::Audio { data } => Some(vec![data.get_file()]),
@@ -107,7 +107,7 @@ impl MessageGetFiles for MessageKind {
                 Some(files)
             }
             MessageKind::Photo { data, .. } => {
-                Some(data.into_iter().map(|f| f.get_file()).collect())
+                Some(data.iter().map(|f| f.get_file()).collect())
             }
             MessageKind::Sticker { data } => Some(vec![data.get_file()]),
             MessageKind::Video { data, .. } => {
@@ -133,7 +133,7 @@ impl MessageGetFiles for MessageKind {
             MessageKind::LeftChatMember { .. } => None,
             MessageKind::NewChatTitle { .. } => None,
             MessageKind::NewChatPhoto { data } => {
-                Some(data.into_iter().map(|f| f.get_file()).collect())
+                Some(data.iter().map(|f| f.get_file()).collect())
             }
             MessageKind::DeleteChatPhoto => None,
             MessageKind::GroupChatCreated => None,
@@ -148,7 +148,7 @@ impl MessageGetFiles for MessageKind {
 }
 
 impl MessageGetFiles for ChannelPost {
-    fn get_files<'a>(&'a self) -> Option<Vec<GetFile>> {
+    fn get_files(&self) -> Option<Vec<GetFile>> {
         self.kind.get_files()
     }
 }

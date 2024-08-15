@@ -56,7 +56,7 @@ impl<Resp: ResponseType + 'static> Request for DetachedRequest<Resp> {
     type Response = Resp;
 
     fn serialize(&self) -> Result<HttpRequest, Error> {
-        Ok(Self::Type::serialize((), &self.http_request)?)
+        Self::Type::serialize((), &self.http_request)
     }
 }
 

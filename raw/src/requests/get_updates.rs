@@ -23,6 +23,12 @@ impl Request for GetUpdates {
     }
 }
 
+impl Default for GetUpdates {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl GetUpdates {
     pub fn new() -> Self {
         GetUpdates {

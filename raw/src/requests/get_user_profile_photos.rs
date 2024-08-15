@@ -47,7 +47,7 @@ pub trait CanGetUserProfilePhotos {
     fn get_user_profile_photos(&self) -> GetUserProfilePhotos;
 }
 
-impl<'b, U> CanGetUserProfilePhotos for U
+impl<U> CanGetUserProfilePhotos for U
 where
     U: ToUserId,
 {

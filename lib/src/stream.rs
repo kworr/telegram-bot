@@ -103,7 +103,7 @@ impl Stream for UpdatesStream {
 
                 let request = ref_mut.api.send_timeout(get_updates, timeout);
                 ref_mut.current_request = Some(Box::pin(request));
-                return Poll::Ready(Some(Err(err)));
+                Poll::Ready(Some(Err(err)))
             }
             Ok(false) => {
                 let timeout = ref_mut.timeout + Duration::from_secs(1);

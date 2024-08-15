@@ -15,6 +15,7 @@ categories = ["api-bindings"]
 license = "MIT"
 
 [dependencies]
+anyhow = "1.0.86"
 bytes = "1.0"
 serde = { version = "1", features = ["derive"] }
 serde_derive = "1"

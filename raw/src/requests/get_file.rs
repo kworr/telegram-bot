@@ -9,7 +9,7 @@ pub struct GetFile {
     file_id: FileRef,
 }
 
-impl<'s> Request for GetFile {
+impl Request for GetFile {
     type Type = JsonRequestType<Self>;
     type Response = JsonIdResponse<File>;
 

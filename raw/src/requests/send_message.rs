@@ -22,7 +22,7 @@ pub struct SendMessage<'s> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'c, 's> Request for SendMessage<'s> {
+impl<'s> Request for SendMessage<'s> {
     type Type = JsonRequestType<Self>;
     type Response = JsonIdResponse<MessageOrChannelPost>;
 

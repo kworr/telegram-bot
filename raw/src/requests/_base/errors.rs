@@ -37,7 +37,7 @@ impl fmt::Display for Error {
                 description,
                 parameters,
             } => {
-                f.write_str(&description)?;
+                f.write_str(description)?;
                 if let Some(parameters) = parameters {
                     if let Some(chat_id) = parameters.migrate_to_chat_id {
                         write!(f, ", migrate to chat id: {}", chat_id)?;
@@ -48,7 +48,7 @@ impl fmt::Display for Error {
                 }
                 Ok(())
             }
-            ErrorKind::DetachedError(s) => f.write_str(&s),
+            ErrorKind::DetachedError(s) => f.write_str(s),
             ErrorKind::Json(error) => write!(f, "{}", error),
         }
     }
