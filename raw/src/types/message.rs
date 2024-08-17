@@ -74,7 +74,7 @@ pub enum ForwardFrom {
         /// Original channel.
         channel: Channel,
         /// Identifier of the original message in the channel
-        message_id: Integer,
+        message_id: Option<Integer>,
     },
     ChannelHiddenUser {
         sender_name: String,
@@ -244,12 +244,12 @@ impl Message {
             raw.forward_from_message_id,
             &raw.forward_sender_name,
         ) {
-            (None, &None, &None, None, &None) => None,
-            (Some(date), Some(from), &None, None, &None) => Some(Forward {
+            (None, None, None, None, None) => None,
+            (Some(date), Some(from), None, None, None) => Some(Forward {
                 date,
                 from: ForwardFrom::User { user: from.clone() },
             }),
-            (Some(date), &None, &Some(Chat::Channel(ref channel)), Some(message_id), &None) => {
+            (Some(date), None, Some(Chat::Channel(ref channel)), message_id, None) => {
                 Some(Forward {
                     date,
                     from: ForwardFrom::Channel {
@@ -258,7 +258,7 @@ impl Message {
                     },
                 })
             }
-            (Some(date), &None, &None, None, Some(sender_name)) => Some(Forward {
+            (Some(date), None, None, None, Some(sender_name)) => Some(Forward {
                 date,
                 from: ForwardFrom::ChannelHiddenUser {
                     sender_name: sender_name.clone(),
@@ -404,16 +404,14 @@ impl ChannelPost {
                 date,
                 from: ForwardFrom::User { user: from.clone() },
             }),
-            (Some(date), &None, Some(Chat::Channel(channel)), Some(message_id), &None) => {
-                Some(Forward {
-                    date,
-                    from: ForwardFrom::Channel {
-                        channel: channel.clone(),
-                        message_id,
-                    },
-                })
-            }
-            (Some(date), &None, &None, None, Some(sender_name)) => Some(Forward {
+            (Some(date), None, Some(Chat::Channel(channel)), message_id, None) => Some(Forward {
+                date,
+                from: ForwardFrom::Channel {
+                    channel: channel.clone(),
+                    message_id,
+                },
+            }),
+            (Some(date), None, None, None, Some(sender_name)) => Some(Forward {
                 date,
                 from: ForwardFrom::ChannelHiddenUser {
                     sender_name: sender_name.clone(),
