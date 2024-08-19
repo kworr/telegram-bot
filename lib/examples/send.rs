@@ -18,7 +18,7 @@ async fn run_test(api: Api, message: Message) -> Result<(), Error> {
         .await?;
     if let Some(from) = &message.from {
         api.send(from.document(&file).caption("Send to user"))
-        .await?;
+            .await?;
     }
 
     // With custom thumbnail
