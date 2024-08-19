@@ -20,11 +20,13 @@ async fn main() -> Result<(), Error> {
         let update = update?;
         if let UpdateKind::Message(message) = update.kind {
             if let MessageKind::Text { ref data, .. } = message.kind {
-                api.send(message.text_reply(format!(
-                    "Hi, {}! You just wrote '{}'",
-                    &message.from.first_name, data
-                )))
-                .await?;
+                if let Some(from) = &message.from {
+                    api.send(message.text_reply(format!(
+                        "Hi, {}! You just wrote '{}'",
+                        from.first_name, data
+                    )))
+                    .await?;
+                }
             }
         }
     }

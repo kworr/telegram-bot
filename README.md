@@ -40,7 +40,11 @@ async fn main() -> Result<(), Error> {
         if let UpdateKind::Message(message) = update.kind {
             if let MessageKind::Text { ref data, .. } = message.kind {
                 // Print received text message to stdout.
-                println!("<{}>: {}", &message.from.first_name, data);
+                if let Some(from) = &message.from {
+                    println!("<{}>: {}", from.first_name, data);
+                } else {
+                    println!(": {}", data);
+                }
 
                 // Answer message with "Hi".
                 api.send(message.text_reply(format!(

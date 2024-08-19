@@ -32,14 +32,18 @@ async fn test_reply(api: Api, message: Message) -> Result<(), Error> {
     api.send(message.text_reply("Reply to message")).await?;
     api.send(message.chat.text("Text to message chat")).await?;
 
-    api.send(message.from.text("Private text")).await?;
+    if let Some(from) = &message.from {
+        api.send(from.text("Private text")).await?;
+    }
     Ok(())
 }
 
 async fn test_forward(api: Api, message: Message) -> Result<(), Error> {
     api.send(message.forward(&message.chat)).await?;
 
-    api.send(message.forward(&message.from)).await?;
+    if let Some(from) = &message.from {
+        api.send(message.forward(from)).await?;
+    }
     Ok(())
 }
 
@@ -82,20 +86,28 @@ async fn test_get_chat_members_count(api: Api, message: Message) -> Result<(), E
 }
 
 async fn test_get_chat_member(api: Api, message: Message) -> Result<(), Error> {
-    let member = api.send(message.chat.get_member(&message.from)).await?;
-    let first_name = member.user.first_name.clone();
-    let status = member.status;
-    api.send(message.text_reply(format!("Member {}, status {:?}", first_name, status)))
-        .await?;
-    Ok(())
+    if let Some(from) = &message.from {
+        let member = api.send(message.chat.get_member(from)).await?;
+        let first_name = member.user.first_name.clone();
+        let status = member.status;
+        api.send(message.text_reply(format!("Member {}, status {:?}", first_name, status)))
+            .await?;
+        Ok(())
+    } else {
+        panic!("missing 'from' field")
+    }
 }
 
 async fn test_get_user_profile_photos(api: Api, message: Message) -> Result<(), Error> {
-    let photos = api.send(message.from.get_user_profile_photos()).await?;
+    if let Some(from) = &message.from {
+        let photos = api.send(from.get_user_profile_photos()).await?;
 
-    api.send(message.text_reply(format!("Found photos: {}", photos.total_count)))
-        .await?;
-    Ok(())
+        api.send(message.text_reply(format!("Found photos: {}", photos.total_count)))
+            .await?;
+        Ok(())
+    } else {
+        panic!("missing 'from' field")
+    }
 }
 
 async fn test_leave(api: Api, message: Message) -> Result<(), Error> {

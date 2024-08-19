@@ -16,14 +16,18 @@ async fn main() -> Result<(), Error> {
         if let UpdateKind::Message(message) = update.kind {
             if let MessageKind::Text { ref data, .. } = message.kind {
                 // Print received text message to stdout.
-                println!("<{}>: {}", &message.from.first_name, data);
+                if let Some(from) = &message.from {
+                    println!("<{}>: {}", from.first_name, data);
 
-                // Answer message with "Hi".
-                api.send(message.text_reply(format!(
-                    "Hi, {}! You just wrote '{}'",
-                    &message.from.first_name, data
-                )))
-                .await?;
+                    // Answer message with "Hi".
+                    api.send(message.text_reply(format!(
+                        "Hi, {}! You just wrote '{}'",
+                        from.first_name, data
+                    )))
+                    .await?;
+                } else {
+                    println!(": {}", data);
+                }
             }
         }
     }
