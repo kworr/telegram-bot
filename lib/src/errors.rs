@@ -1,58 +1,15 @@
-use std::error;
-use std::fmt;
+use thiserror::Error;
 
-#[derive(Debug)]
-pub struct Error(ErrorKind);
-
-#[derive(Debug)]
-pub enum ErrorKind {
-    Raw(telegram_bot_raw::Error),
-    Hyper(hyper::Error),
-    Http(hyper::http::Error),
-    Io(std::io::Error),
+#[derive(Error, Debug)]
+pub enum Error {
+    #[error("error from Hyper library")]
+    Hyper(#[from] hyper::Error),
+    #[error("http request error from Hyper library")]
+    Http(#[from] hyper::http::Error),
+    #[error("Invalid multipart filename")]
     InvalidMultipartFilename,
+    #[error("ordinary IO Error")]
+    Io(#[from] std::io::Error),
+    #[error("raw error from Telegram API")]
+    Raw(#[from] telegram_bot_raw::Error),
 }
-
-impl From<telegram_bot_raw::Error> for ErrorKind {
-    fn from(error: telegram_bot_raw::Error) -> Self {
-        ErrorKind::Raw(error)
-    }
-}
-
-impl From<hyper::Error> for ErrorKind {
-    fn from(error: hyper::Error) -> Self {
-        ErrorKind::Hyper(error)
-    }
-}
-
-impl From<hyper::http::Error> for ErrorKind {
-    fn from(error: hyper::http::Error) -> Self {
-        ErrorKind::Http(error)
-    }
-}
-
-impl From<std::io::Error> for ErrorKind {
-    fn from(error: std::io::Error) -> Self {
-        ErrorKind::Io(error)
-    }
-}
-
-impl From<ErrorKind> for Error {
-    fn from(kind: ErrorKind) -> Self {
-        Error(kind)
-    }
-}
-
-impl fmt::Display for Error {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match &self.0 {
-            ErrorKind::Raw(error) => write!(f, "{}", error),
-            ErrorKind::Hyper(error) => write!(f, "{}", error),
-            ErrorKind::Http(error) => write!(f, "{}", error),
-            ErrorKind::Io(error) => write!(f, "{}", error),
-            ErrorKind::InvalidMultipartFilename => write!(f, "invalid multipart filename"),
-        }
-    }
-}
-
-impl error::Error for Error {}

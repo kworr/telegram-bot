@@ -22,7 +22,7 @@ use telegram_bot_raw::{
 };
 
 use super::Connector;
-use crate::errors::{Error, ErrorKind};
+use crate::errors::Error;
 
 #[derive(Debug)]
 pub struct HyperConnector<C>(Client<C>);
@@ -48,7 +48,7 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
         let client = self.0.clone();
 
         let future = async move {
-            let uri = uri.map_err(HttpError::from).map_err(ErrorKind::from)?;
+            let uri = uri.map_err(HttpError::from).map_err(Error::from)?;
 
             let method = match req.method {
                 TelegramMethod::Get => Method::GET,
@@ -63,7 +63,7 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
                     let content_type = "application/json"
                         .parse()
                         .map_err(HttpError::from)
-                        .map_err(ErrorKind::from)?;
+                        .map_err(Error::from)?;
                     http_request
                         .headers_mut()
                         .map(move |headers| headers.insert(CONTENT_TYPE, content_type));
@@ -84,9 +84,9 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
                                             .and_then(|s| s.to_str())
                                             .map(Into::into)
                                     })
-                                    .ok_or(ErrorKind::InvalidMultipartFilename)?;
+                                    .ok_or(Error::InvalidMultipartFilename)?;
 
-                                let data = tokio::fs::read(path).await.map_err(ErrorKind::from)?;
+                                let data = tokio::fs::read(path).await.map_err(Error::from)?;
                                 fields.push((
                                     key,
                                     MultipartTemporaryValue::Data {
@@ -119,7 +119,7 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
                         }
                         part.prepare().map_err(|err| err.error)
                     }
-                    .map_err(ErrorKind::from)?;
+                    .map_err(Error::from)?;
 
                     let boundary = prepared.boundary();
 
@@ -127,20 +127,20 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
                         format!("multipart/form-data;boundary={bound}", bound = boundary)
                             .parse()
                             .map_err(HttpError::from)
-                            .map_err(ErrorKind::from)?;
+                            .map_err(Error::from)?;
                     if let Some(headers) = http_request.headers_mut() {
                         headers.insert(CONTENT_TYPE, content_type);
                     }
 
                     let mut bytes = Vec::new();
-                    prepared.read_to_end(&mut bytes).map_err(ErrorKind::from)?;
+                    prepared.read_to_end(&mut bytes).map_err(Error::from)?;
                     http_request.body(bytes.into())
                 }
                 body => panic!("Unknown body type {:?}", body),
             }
-            .map_err(ErrorKind::from)?;
+            .map_err(Error::from)?;
 
-            let response = client.request(request).await.map_err(ErrorKind::from)?;
+            let response = client.request(request).await.map_err(Error::from)?;
             let whole_chunk = to_bytes(response.into_body()).await;
 
             let body = whole_chunk
