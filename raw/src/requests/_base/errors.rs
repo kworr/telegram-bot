@@ -6,11 +6,11 @@ use crate::types::*;
 pub enum Error {
     #[error("Emtpy body")]
     EmptyBody,
-    #[error("Detached error")]
+    #[error("Detached error: {0}")]
     DetachedError(String),
-    #[error("JSON ser/de error")]
+    #[error(transparent)]
     Json(#[from] serde_json::Error),
-    #[error("Telegram error")]
+    #[error("Telegram error:\n{description}\n{parameters:?}")]
     TelegramError {
         description: String,
         parameters: Option<ResponseParameters>,

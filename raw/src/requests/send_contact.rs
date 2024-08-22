@@ -101,28 +101,28 @@ where
 
 /// Reply with phone contact.
 pub trait CanReplySendContact {
-    fn contact_reply<'p, 'f, 'l, P: 'p, F: 'f>(
+    fn contact_reply<'p, 'f, 'l, P, F>(
         &self,
         phone_number: P,
         first_name: F,
     ) -> SendContact<'p, 'f, 'l>
     where
-        P: Into<Cow<'p, str>>,
-        F: Into<Cow<'f, str>>;
+        P: Into<Cow<'p, str>> + 'p,
+        F: Into<Cow<'f, str>> + 'f;
 }
 
 impl<M> CanReplySendContact for M
 where
     M: ToMessageId + ToSourceChat,
 {
-    fn contact_reply<'p, 'f, 'l, P: 'p, F: 'f>(
+    fn contact_reply<'p, 'f, 'l, P, F>(
         &self,
         phone_number: P,
         first_name: F,
     ) -> SendContact<'p, 'f, 'l>
     where
-        P: Into<Cow<'p, str>>,
-        F: Into<Cow<'f, str>>,
+        P: Into<Cow<'p, str>> + 'p,
+        F: Into<Cow<'f, str>> + 'f,
     {
         let mut rq = self.to_source_chat().contact(phone_number, first_name);
         rq.reply_to(self.to_message_id());

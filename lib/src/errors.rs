@@ -2,14 +2,14 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum Error {
-    #[error("error from Hyper library")]
+    #[error(transparent)]
     Hyper(#[from] hyper::Error),
-    #[error("http request error from Hyper library")]
+    #[error(transparent)]
     Http(#[from] hyper::http::Error),
     #[error("Invalid multipart filename")]
     InvalidMultipartFilename,
-    #[error("ordinary IO Error")]
+    #[error(transparent)]
     Io(#[from] std::io::Error),
-    #[error("raw error from Telegram API")]
+    #[error(transparent)]
     Raw(#[from] telegram_bot_raw::Error),
 }
