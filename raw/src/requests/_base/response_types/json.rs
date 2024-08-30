@@ -49,11 +49,10 @@ where
                 } => Err(Error::TelegramError {
                     description,
                     parameters,
-                }
-                .into()),
+                }),
             }
         } else {
-            Err(Error::EmptyBody.into())
+            Err(Error::EmptyBody)
         }
     }
 }
