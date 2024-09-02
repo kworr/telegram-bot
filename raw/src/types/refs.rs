@@ -93,13 +93,19 @@ impl ToSourceChat for MessageOrChannelPost {
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum ChatRef {
     Id(ChatId),
-    #[doc(hidden)]
     ChannelUsername(String),
 }
 
 impl ChatRef {
     pub fn from_chat_id(chat_id: ChatId) -> ChatRef {
         ChatRef::Id(chat_id)
+    }
+
+    /// This variant takes string (in the format @channelusername), but
+    /// requests for usernames like GetChat are heavily throttled, so
+    /// make sure you are not using it a lot
+    pub fn from_username(username: String) -> ChatRef {
+        ChatRef::ChannelUsername(username)
     }
 }
 
