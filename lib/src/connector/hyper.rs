@@ -141,14 +141,10 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
             .map_err(Error::from)?;
 
             let response = client.request(request).await.map_err(Error::from)?;
-            let whole_chunk = to_bytes(response.into_body()).await;
-
-            let body = whole_chunk
-                .iter()
-                .fold(vec![], |mut acc, chunk| -> Vec<u8> {
-                    acc.extend_from_slice(chunk);
-                    acc
-                });
+            let body = to_bytes(response.into_body())
+                .await
+                .unwrap_or_default()
+                .to_vec();
 
             Ok::<HttpResponse, Error>(HttpResponse { body: Some(body) })
         };
