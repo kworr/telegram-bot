@@ -3,7 +3,7 @@ use thiserror::Error;
 #[derive(Error, Debug)]
 pub enum Error {
     #[error(transparent)]
-    Hyper(#[from] hyper::Error),
+    Hyper(#[from] hyper_util::client::legacy::Error),
     #[error(transparent)]
     Http(#[from] hyper::http::Error),
     #[error("Invalid multipart filename")]
