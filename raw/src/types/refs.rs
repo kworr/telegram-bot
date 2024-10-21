@@ -82,8 +82,8 @@ impl ToSourceChat for ChannelPost {
 impl ToSourceChat for MessageOrChannelPost {
     fn to_source_chat(&self) -> ChatId {
         match self {
-            MessageOrChannelPost::Message(ref message) => message.to_source_chat(),
-            MessageOrChannelPost::ChannelPost(ref channel_post) => channel_post.to_source_chat(),
+            MessageOrChannelPost::Message(message) => message.to_source_chat(),
+            MessageOrChannelPost::ChannelPost(channel_post) => channel_post.to_source_chat(),
         }
     }
 }
@@ -312,8 +312,8 @@ impl ToMessageId for ChannelPost {
 impl ToMessageId for MessageOrChannelPost {
     fn to_message_id(&self) -> MessageId {
         match self {
-            MessageOrChannelPost::Message(ref message) => message.to_message_id(),
-            MessageOrChannelPost::ChannelPost(ref channel_post) => channel_post.to_message_id(),
+            MessageOrChannelPost::Message(message) => message.to_message_id(),
+            MessageOrChannelPost::ChannelPost(channel_post) => channel_post.to_message_id(),
         }
     }
 }

@@ -42,7 +42,7 @@ impl From<ForceReply> for ReplyMarkup {
 }
 
 /// This object represents a custom keyboard with reply options.
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, PartialOrd, Serialize)]
 pub struct ReplyKeyboardMarkup {
     keyboard: Vec<Vec<KeyboardButton>>,
     #[serde(skip_serializing_if = "Not::not")]
@@ -55,12 +55,7 @@ pub struct ReplyKeyboardMarkup {
 
 impl ReplyKeyboardMarkup {
     pub fn new() -> Self {
-        ReplyKeyboardMarkup {
-            keyboard: Vec::new(),
-            resize_keyboard: false,
-            one_time_keyboard: false,
-            selective: false,
-        }
+        Self::default()
     }
 
     fn init(rows: Vec<Vec<KeyboardButton>>) -> Self {
@@ -104,12 +99,6 @@ impl ReplyKeyboardMarkup {
 
     pub fn add_empty_row(&mut self) -> &mut Vec<KeyboardButton> {
         self.add_row(Default::default())
-    }
-}
-
-impl Default for ReplyKeyboardMarkup {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -172,7 +161,7 @@ impl From<String> for KeyboardButton {
 /// By default, custom keyboards are displayed until a new keyboard is sent
 /// by a bot. An exception is made for one-time keyboards that are hidden
 /// immediately after the user presses a button (see ReplyKeyboardMarkup).
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, PartialOrd, Serialize)]
 pub struct ReplyKeyboardRemove {
     remove_keyboard: True,
     #[serde(skip_serializing_if = "Not::not")]
@@ -181,10 +170,7 @@ pub struct ReplyKeyboardRemove {
 
 impl ReplyKeyboardRemove {
     pub fn new() -> Self {
-        Self {
-            remove_keyboard: True,
-            selective: false,
-        }
+        Self::default()
     }
 
     /// Use this method if you want to force reply from specific users only.
@@ -197,23 +183,15 @@ impl ReplyKeyboardRemove {
     }
 }
 
-impl Default for ReplyKeyboardRemove {
-    fn default() -> Self {
-        Self::new()
-    }
-}
-
 /// This object represents an inline keyboard that appears right next to the message it belongs to.
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, PartialOrd, Serialize)]
 pub struct InlineKeyboardMarkup {
     inline_keyboard: Vec<Vec<InlineKeyboardButton>>,
 }
 
 impl InlineKeyboardMarkup {
     pub fn new() -> Self {
-        Self {
-            inline_keyboard: Default::default(),
-        }
+        Self::default()
     }
 
     fn init(inline_keyboard: Vec<Vec<InlineKeyboardButton>>) -> Self {
@@ -227,12 +205,6 @@ impl InlineKeyboardMarkup {
 
     pub fn add_empty_row(&mut self) -> &mut Vec<InlineKeyboardButton> {
         self.add_row(Default::default())
-    }
-}
-
-impl Default for InlineKeyboardMarkup {
-    fn default() -> Self {
-        Self::new()
     }
 }
 
@@ -316,7 +288,7 @@ pub enum InlineKeyboardButtonKind {
 /// selected the bot‘s message and tapped ’Reply'). This can be
 /// extremely useful if you want to create user-friendly step-by-step
 /// interfaces without having to sacrifice privacy mod
-#[derive(Debug, Clone, PartialEq, PartialOrd, Serialize)]
+#[derive(Debug, Default, Clone, PartialEq, PartialOrd, Serialize)]
 pub struct ForceReply {
     force_reply: True,
     #[serde(skip_serializing_if = "Not::not")]
@@ -325,10 +297,7 @@ pub struct ForceReply {
 
 impl ForceReply {
     pub fn new() -> Self {
-        Self {
-            force_reply: True,
-            selective: false,
-        }
+        Self::default()
     }
 
     /// Use this method if you want to force reply from specific users only.
@@ -338,11 +307,5 @@ impl ForceReply {
     pub fn selective(&mut self) -> &mut Self {
         self.selective = true;
         self
-    }
-}
-
-impl Default for ForceReply {
-    fn default() -> Self {
-        Self::new()
     }
 }

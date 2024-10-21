@@ -246,7 +246,7 @@ impl Message {
                 date,
                 from: ForwardFrom::User { user: from.clone() },
             }),
-            (Some(date), None, Some(Chat::Channel(ref channel)), message_id, None) => {
+            (Some(date), None, Some(Chat::Channel(channel)), message_id, None) => {
                 Some(Forward {
                     date,
                     from: ForwardFrom::Channel {
@@ -264,15 +264,17 @@ impl Message {
             (
                 Some(date),
                 None,
-                Some(Chat::Supergroup(Supergroup {
-                    id: chat_id, title, ..
+                &Some(Chat::Supergroup(Supergroup {
+                    id: chat_id,
+                    ref title,
+                    ..
                 })),
                 None,
                 None,
             ) => Some(Forward {
                 date,
                 from: ForwardFrom::HiddenGroupAdmin {
-                    chat_id: *chat_id,
+                    chat_id,
                     title: title.clone(),
                 },
             }),
@@ -396,8 +398,8 @@ impl ChannelPost {
             raw.forward_from_message_id,
             &raw.forward_sender_name,
         ) {
-            (None, &None, &None, None, &None) => None,
-            (Some(date), Some(from), &None, None, &None) => Some(Forward {
+            (None, None, None, None, None) => None,
+            (Some(date), Some(from), None, None, None) => Some(Forward {
                 date,
                 from: ForwardFrom::User { user: from.clone() },
             }),
@@ -417,15 +419,17 @@ impl ChannelPost {
             (
                 Some(date),
                 None,
-                Some(Chat::Supergroup(Supergroup {
-                    id: chat_id, title, ..
+                &Some(Chat::Supergroup(Supergroup {
+                    id: chat_id,
+                    ref title,
+                    ..
                 })),
                 None,
                 None,
             ) => Some(Forward {
                 date,
                 from: ForwardFrom::HiddenGroupAdmin {
-                    chat_id: *chat_id,
+                    chat_id,
                     title: title.clone(),
                 },
             }),
