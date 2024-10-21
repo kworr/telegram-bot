@@ -6,7 +6,11 @@ use std::str::FromStr;
 use bytes::Bytes;
 use futures::{Future, FutureExt};
 use http_body_util::{BodyExt, Full};
-use hyper::{header::CONTENT_TYPE, http::Error as HttpError, Method, Request, Uri};
+use hyper::{
+    header::{HeaderValue, CONTENT_TYPE},
+    http::Error as HttpError,
+    Method, Request, Uri,
+};
 #[cfg(feature = "rustls")]
 use hyper_rustls::HttpsConnectorBuilder;
 #[cfg(feature = "openssl")]
@@ -21,6 +25,8 @@ use telegram_bot_raw::{
 
 use super::Connector;
 use crate::errors::Error;
+
+static JSON_MIME_TYPE: HeaderValue = HeaderValue::from_static("application/json");
 
 #[derive(Debug)]
 pub struct HyperConnector<C>(Client<C, Full<Bytes>>);
@@ -58,13 +64,9 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
             let request = match req.body {
                 TelegramBody::Empty => http_request.body(Full::new(Bytes::new())),
                 TelegramBody::Json(body) => {
-                    let content_type = "application/json"
-                        .parse()
-                        .map_err(HttpError::from)
-                        .map_err(Error::from)?;
                     http_request
                         .headers_mut()
-                        .map(move |headers| headers.insert(CONTENT_TYPE, content_type));
+                        .map(move |headers| headers.insert(CONTENT_TYPE, JSON_MIME_TYPE.clone()));
                     http_request.body(Full::new(body.into()))
                 }
                 TelegramBody::Multipart(parts) => {
