@@ -155,14 +155,20 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
 }
 
 pub fn default_connector() -> Result<Box<dyn Connector>, Error> {
-    #[cfg(feature = "rustls")]
-    let connector = hyper_rustls::HttpsConnectorBuilder::new()
-        .with_native_roots()
-        .expect("no native root CA certificates found")
-        .https_only()
-        .enable_http1()
-        .enable_http2()
-        .build();
+    #[cfg(any(feature = "rustls-native-roots", feature = "rustls-webpki-roots"))]
+    let connector = {
+        let builder = hyper_rustls::HttpsConnectorBuilder::new();
+
+        #[cfg(feature = "rustls-native-roots")]
+        let builder = builder
+            .with_native_roots()
+            .expect("no native root CA certificates found");
+
+        #[cfg(feature = "rustls-webpki-roots")]
+        let builder = builder.with_webpki_roots();
+
+        builder.https_only().enable_http1().enable_http2().build()
+    };
 
     #[cfg(feature = "openssl")]
     let connector = {

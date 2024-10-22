@@ -16,7 +16,9 @@ license = "MIT"
 
 [features]
 openssl = ["hyper-tls"]
-rustls = ["hyper-rustls"]
+rustls = ["rustls-webpki-roots"]
+rustls-native-roots = ["dep:hyper-rustls", "hyper-rustls/ring", "hyper-rustls/native-tokio"]
+rustls-webpki-roots = ["dep:hyper-rustls", "hyper-rustls/ring", "hyper-rustls/webpki-roots"]
 default = ["openssl"]
 
 [dependencies]
@@ -33,7 +35,7 @@ telegram-bot-raw = { version = "0.9.0", path = "../raw" }
 futures = "0.3"
 hyper = { version = "1", features = [ "client", "http1", "http2" ] }
 hyper-tls = { version = "0.6", optional = true  }
-hyper-rustls = { version = "0.27", optional = true, features = [ "http2", "rustls-native-certs" ] }
+hyper-rustls = { version = "0.27", optional = true, default-features = false, features = ["http1", "http2", "tls12"] }
 hyper-util = { version = "0.1.10", features = ["client", "client-legacy", "http1", "http2" ] }
 
 http-body-util = "0.1.2"
