@@ -123,11 +123,10 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
 
                     let boundary = prepared.boundary();
 
-                    let content_type =
-                        format!("multipart/form-data;boundary={bound}", bound = boundary)
-                            .parse()
-                            .map_err(HttpError::from)
-                            .map_err(Error::from)?;
+                    let content_type = format!("multipart/form-data;boundary={boundary}")
+                        .parse()
+                        .map_err(HttpError::from)
+                        .map_err(Error::from)?;
                     if let Some(headers) = http_request.headers_mut() {
                         headers.insert(CONTENT_TYPE, content_type);
                     }
@@ -136,7 +135,7 @@ impl<C: Connect + std::fmt::Debug + 'static + Clone + Send + Sync> Connector for
                     prepared.read_to_end(&mut bytes).map_err(Error::from)?;
                     http_request.body(bytes.into())
                 }
-                body => panic!("Unknown body type {:?}", body),
+                body => panic!("Unknown body type {body:?}"),
             }
             .map_err(Error::from)?;
 

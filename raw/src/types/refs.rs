@@ -181,9 +181,9 @@ impl Serialize for ChatRef {
 
 impl fmt::Display for ChatRef {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        match *self {
-            ChatRef::Id(id) => write!(f, "{}", id),
-            ChatRef::ChannelUsername(ref username) => write!(f, "{}", username),
+        match self {
+            ChatRef::Id(id) => write!(f, "{id}"),
+            ChatRef::ChannelUsername(username) => write!(f, "{username}"),
         }
     }
 }
