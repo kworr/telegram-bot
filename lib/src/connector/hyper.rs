@@ -13,7 +13,6 @@ use hyper::{
 };
 #[cfg(feature = "rustls")]
 use hyper_rustls::HttpsConnectorBuilder;
-#[cfg(feature = "openssl")]
 use hyper_util::{
     client::legacy::{connect::Connect, Client},
     rt::TokioExecutor,
