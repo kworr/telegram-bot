@@ -116,8 +116,8 @@ async fn test_leave(api: Api, message: Message) -> Result<(), Error> {
 }
 
 async fn test(api: Api, message: Message) -> Result<(), Error> {
-    match message.kind {
-        MessageKind::Text { ref data, .. } => match data.as_str() {
+    if let MessageKind::Text { ref data, .. } = message.kind {
+        match data.as_str() {
             "/message" => test_message(api, message).await?,
             "/preview" => test_preview(api, message).await?,
             "/reply" => test_reply(api, message).await?,
@@ -130,8 +130,7 @@ async fn test(api: Api, message: Message) -> Result<(), Error> {
             "/get_user_profile_photos" => test_get_user_profile_photos(api, message).await?,
             "/leave" => test_leave(api, message).await?,
             _ => (),
-        },
-        _ => (),
+        }
     };
 
     Ok(())

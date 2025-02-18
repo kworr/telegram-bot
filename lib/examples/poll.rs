@@ -72,17 +72,18 @@ async fn main() -> Result<(), Error> {
         let update = update?;
 
         match update.kind {
-            UpdateKind::Message(message) => match message.kind {
-                MessageKind::Text { ref data, .. } => match data.as_str() {
-                    "/poll" => test_anonymous_poll(api.clone(), message).await?,
-                    "/quiz" => test_quiz_poll(api.clone(), message).await?,
-                    "/public" => test_public_poll(api.clone(), message).await?,
-                    "/multiple" => test_multiple_answers(api.clone(), message).await?,
-                    "/closed" => test_closed_poll(api.clone(), message).await?,
-                    _ => (),
-                },
-                _ => (),
-            },
+            UpdateKind::Message(message) => {
+                if let MessageKind::Text { ref data, .. } = message.kind {
+                    match data.as_str() {
+                        "/poll" => test_anonymous_poll(api.clone(), message).await?,
+                        "/quiz" => test_quiz_poll(api.clone(), message).await?,
+                        "/public" => test_public_poll(api.clone(), message).await?,
+                        "/multiple" => test_multiple_answers(api.clone(), message).await?,
+                        "/closed" => test_closed_poll(api.clone(), message).await?,
+                        _ => (),
+                    }
+                }
+            }
             UpdateKind::Poll(Poll {
                 total_voter_count,
                 id,

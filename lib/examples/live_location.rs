@@ -35,9 +35,8 @@ async fn main() -> Result<(), Error> {
         let update = update?;
         if let UpdateKind::Message(message) = update.kind {
             if let MessageKind::Text { ref data, .. } = message.kind {
-                match data.as_str() {
-                    "/livelocation" => test(api.clone(), message.clone()).await?,
-                    _ => (),
+                if data.as_str() == "/livelocation" {
+                    test(api.clone(), message.clone()).await?;
                 }
             }
         }
