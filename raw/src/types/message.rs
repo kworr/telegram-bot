@@ -246,15 +246,13 @@ impl Message {
                 date,
                 from: ForwardFrom::User { user: from.clone() },
             }),
-            (Some(date), None, Some(Chat::Channel(channel)), message_id, None) => {
-                Some(Forward {
-                    date,
-                    from: ForwardFrom::Channel {
-                        channel: channel.clone(),
-                        message_id,
-                    },
-                })
-            }
+            (Some(date), None, Some(Chat::Channel(channel)), message_id, None) => Some(Forward {
+                date,
+                from: ForwardFrom::Channel {
+                    channel: channel.clone(),
+                    message_id,
+                },
+            }),
             (Some(date), None, None, None, Some(sender_name)) => Some(Forward {
                 date,
                 from: ForwardFrom::ChannelHiddenUser {
