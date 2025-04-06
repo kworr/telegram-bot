@@ -14,7 +14,7 @@ pub struct EditMessageCaption<'s> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'s> Request for EditMessageCaption<'s> {
+impl Request for EditMessageCaption<'_> {
     type Type = JsonRequestType<Self>;
     type Response = JsonIdResponse<Message>;
 

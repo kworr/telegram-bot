@@ -19,7 +19,7 @@ pub struct EditMessageText<'s> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'s> Request for EditMessageText<'s> {
+impl Request for EditMessageText<'_> {
     type Type = JsonRequestType<Self>;
     type Response = JsonIdResponse<Message>;
 

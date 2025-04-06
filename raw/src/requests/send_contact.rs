@@ -21,7 +21,7 @@ pub struct SendContact<'p, 'f, 'l> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'p, 'f, 'l> Request for SendContact<'p, 'f, 'l> {
+impl Request for SendContact<'_, '_, '_> {
     type Type = JsonRequestType<Self>;
     type Response = JsonIdResponse<Message>;
 

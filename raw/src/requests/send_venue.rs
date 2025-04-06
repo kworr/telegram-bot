@@ -23,7 +23,7 @@ pub struct SendVenue<'t, 'a, 'f> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'t, 'a, 'f> Request for SendVenue<'t, 'a, 'f> {
+impl Request for SendVenue<'_, '_, '_> {
     type Type = JsonRequestType<Self>;
     type Response = JsonIdResponse<Message>;
 

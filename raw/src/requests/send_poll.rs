@@ -38,7 +38,7 @@ pub struct SendPoll<'q, 'o, 'e> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'q, 'o, 'e> Request for SendPoll<'q, 'o, 'e> {
+impl Request for SendPoll<'_, '_, '_> {
     type Type = JsonRequestType<Self>;
     type Response = JsonIdResponse<MessageOrChannelPost>;
 

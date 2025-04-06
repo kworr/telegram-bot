@@ -21,7 +21,7 @@ pub struct AnswerCallbackQuery<'t> {
     cache_time: Option<i64>,
 }
 
-impl<'t> Request for AnswerCallbackQuery<'t> {
+impl Request for AnswerCallbackQuery<'_> {
     type Type = JsonRequestType<Self>;
     type Response = JsonTrueToUnitResponse;
 

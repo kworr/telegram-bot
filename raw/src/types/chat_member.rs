@@ -25,7 +25,7 @@ impl<'de> Deserialize<'de> for ChatMemberStatus {
         struct ChatMemberStatusVisitor;
         use self::ChatMemberStatus::*;
 
-        impl<'de> Visitor<'de> for ChatMemberStatusVisitor {
+        impl Visitor<'_> for ChatMemberStatusVisitor {
             type Value = ChatMemberStatus;
 
             fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {

@@ -18,7 +18,7 @@ pub struct SendDocument<'c> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'c> ToMultipart for SendDocument<'c> {
+impl ToMultipart for SendDocument<'_> {
     fn to_multipart(&self) -> Result<Multipart, Error> {
         multipart_map! {
             self,
@@ -34,7 +34,7 @@ impl<'c> ToMultipart for SendDocument<'c> {
     }
 }
 
-impl<'c> Request for SendDocument<'c> {
+impl Request for SendDocument<'_> {
     type Type = MultipartRequestType<Self>;
     type Response = JsonIdResponse<Message>;
 

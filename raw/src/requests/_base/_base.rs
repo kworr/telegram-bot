@@ -28,7 +28,7 @@ pub trait Request {
     }
 }
 
-impl<'a, Req: Request> Request for &'a Req {
+impl<Req: Request> Request for &Req {
     type Type = Req::Type;
     type Response = Req::Response;
 
@@ -37,7 +37,7 @@ impl<'a, Req: Request> Request for &'a Req {
     }
 }
 
-impl<'a, Req: Request> Request for &'a mut Req {
+impl<Req: Request> Request for &mut Req {
     type Type = Req::Type;
     type Response = Req::Response;
 

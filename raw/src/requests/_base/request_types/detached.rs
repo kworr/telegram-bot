@@ -10,7 +10,7 @@ impl RequestType for DetachedRequestType {
     fn serialize(_options: Self::Options, request: &Self::Request) -> Result<HttpRequest, Error> {
         match request {
             Ok(req) => Ok(req.clone()),
-            Err(err) => Err(Error::DetachedError(err.to_string()).into()),
+            Err(err) => Err(Error::DetachedError(err.to_string())),
         }
     }
 }

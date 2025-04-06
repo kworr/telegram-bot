@@ -21,7 +21,7 @@ pub struct SendVideo<'c> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'c> ToMultipart for SendVideo<'c> {
+impl ToMultipart for SendVideo<'_> {
     fn to_multipart(&self) -> Result<Multipart, Error> {
         multipart_map! {
             self,
@@ -41,7 +41,7 @@ impl<'c> ToMultipart for SendVideo<'c> {
     }
 }
 
-impl<'c> Request for SendVideo<'c> {
+impl Request for SendVideo<'_> {
     type Type = MultipartRequestType<Self>;
     type Response = JsonIdResponse<Message>;
 

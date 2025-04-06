@@ -20,7 +20,7 @@ pub struct SendAudio<'c, 'p, 't> {
     reply_markup: Option<ReplyMarkup>,
 }
 
-impl<'c, 'p, 't> ToMultipart for SendAudio<'c, 'p, 't> {
+impl ToMultipart for SendAudio<'_, '_, '_> {
     fn to_multipart(&self) -> Result<Multipart, Error> {
         multipart_map! {
             self,
@@ -39,7 +39,7 @@ impl<'c, 'p, 't> ToMultipart for SendAudio<'c, 'p, 't> {
     }
 }
 
-impl<'c, 'p, 't> Request for SendAudio<'c, 'p, 't> {
+impl Request for SendAudio<'_, '_, '_> {
     type Type = MultipartRequestType<Self>;
     type Response = JsonIdResponse<Message>;
 
